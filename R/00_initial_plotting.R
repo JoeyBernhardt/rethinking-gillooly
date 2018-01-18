@@ -43,5 +43,5 @@ params_plot <- params %>%
 
 
 giant_plot <- mr_plot + params_plot + plot_layout(ncol = 2)
-ggplot2::ggsave(plot = giant_plot, filename = "figures/unicells", device = "pdf", width =16, height = 5)
+ggplot2::ggsave(plot = giant_plot, filename = "figures/unicells.png", width =16, height = 5)
 	
