@@ -29,16 +29,21 @@ mult <- ehn2 %>%
 	distinct(species_study, species, temperature) %>% 
 	group_by(species) %>% 
 	tally() %>% 
-	filter(n > 1)
+	filter(n > 2)
 
 ms <- mult$species
 
+View(mult)
+
 ehn2 %>% 
 	filter(species %in% ms) %>% 
+	mutate(inverse_temp = (1/(.00008617*(temperature_c+273.15)))) %>% 
 	unite(col = species_study, sep = "_", remove = FALSE, species, original_study) %>% 
-	ggplot(aes(x = temperature_c, y = log(j_h*(weight_mg^0.75)), color = species_study)) + geom_point()  +
-	facet_wrap( ~ group_2) + geom_smooth(method = "lm") + ylab("Mass normalized metabolic rate (j/g^3/4)") + xlab("Temperature (°C)") +
-	theme(legend.position = "none")
+	ggplot(aes(x = temperature_c, y = log(j_h*(weight_mg^0.75)), color = species_study, fill = species_study)) + geom_point()  +
+	# facet_wrap( ~ group_2) +
+	geom_smooth(method = "lm") + ylab("ln(mass normalized metabolic rate) (j/g^3/4)") + xlab("Temperature (°C)") +
+	theme(legend.position = "none") 
+ggsave("figures/ehnes_arrhenius.pdf", width = 6, height = 6)
 
 
 ehn2 %>% 
